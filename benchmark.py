@@ -78,7 +78,7 @@ def bench_header(path, num_iter):
         blob = f.read()
     blob = BytesIO(blob)
     timings = []
-    for i in xrange(num_iter):
+    for i in range(num_iter):
         start = time.time()
         im = Image.open(blob)
         width, height = im.size
@@ -108,7 +108,7 @@ def bench_resize(path, output_type, width, height, num_iter):
         blob = f.read()
     blob = BytesIO(blob)
     timings = []
-    for i in xrange(num_iter):
+    for i in range(num_iter):
         start = time.time()
         im = Image.open(blob)
         im = im.convert('RGB' if output_type == 'JPEG' else 'RGBA')
@@ -130,7 +130,7 @@ def bench_resize_gif(path, width, height, num_iter):
         blob = f.read()
     blob = BytesIO(blob)
     timings = []
-    for i in xrange(num_iter):
+    for i in range(num_iter):
         start = time.time()
         path = '' if i != 0 else 'py_%d.gif' % width
         size = resize_gif(blob, width, height, path)
@@ -146,7 +146,7 @@ def bench_transcode(path, output_type, num_iter):
         blob = f.read()
     blob = BytesIO(blob)
     timings = []
-    for i in xrange(num_iter):
+    for i in range(num_iter):
         start = time.time()
         im = Image.open(blob)
         output = BytesIO()
