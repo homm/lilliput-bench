@@ -1,7 +1,7 @@
 from __future__ import print_function
 
 import time
-from cStringIO import StringIO
+from io import BytesIO
 from PIL import Image, ImageOps
 
 
@@ -66,7 +66,7 @@ def resize_gif(blob, width, height, write_to=''):
     except EOFError:
         pass
 
-    output = StringIO()
+    output = BytesIO()
     first_frame = frames[0]
     first_frame.save(output, 'GIF', save_all=True, append_images=frames[1:])
     size = len(output.getvalue())
@@ -78,11 +78,11 @@ def resize_gif(blob, width, height, write_to=''):
 
 
 def bench_header(path, num_iter):
-    with open(INPUT_DIR + path) as f:
+    with open(INPUT_DIR + path, 'rb') as f:
         blob = f.read()
-    blob = StringIO(blob)
+    blob = BytesIO(blob)
     timings = []
-    for i in xrange(num_iter):
+    for i in range(num_iter):
         start = time.time()
         im = Image.open(blob)
         width, height = im.size
@@ -108,15 +108,15 @@ save_opts = {
 
 
 def bench_resize(path, output_type, width, height, num_iter):
-    with open(INPUT_DIR + path) as f:
+    with open(INPUT_DIR + path, 'rb') as f:
         blob = f.read()
-    blob = StringIO(blob)
+    blob = BytesIO(blob)
     timings = []
-    for i in xrange(num_iter):
+    for i in range(num_iter):
         start = time.time()
         im = Image.open(blob)
         im = ImageOps.fit(im, (width, height), Image.BICUBIC)
-        output = StringIO()
+        output = BytesIO()
         im.save(output, output_type, **save_opts[output_type])
         if i == 0:
             print('%d Bytes,' % len(output.getvalue()), end='\t')
@@ -129,11 +129,11 @@ def bench_resize(path, output_type, width, height, num_iter):
 
 
 def bench_resize_gif(path, width, height, num_iter):
-    with open(INPUT_DIR + path) as f:
+    with open(INPUT_DIR + path, 'rb') as f:
         blob = f.read()
-    blob = StringIO(blob)
+    blob = BytesIO(blob)
     timings = []
-    for i in xrange(num_iter):
+    for i in range(num_iter):
         start = time.time()
         path = '' if i != 0 else 'py_%d.gif' % width
         size = resize_gif(blob, width, height, path)
@@ -145,14 +145,14 @@ def bench_resize_gif(path, width, height, num_iter):
 
 
 def bench_transcode(path, output_type, num_iter):
-    with open(INPUT_DIR + path) as f:
+    with open(INPUT_DIR + path, 'rb') as f:
         blob = f.read()
-    blob = StringIO(blob)
+    blob = BytesIO(blob)
     timings = []
-    for i in xrange(num_iter):
+    for i in range(num_iter):
         start = time.time()
         im = Image.open(blob)
-        output = StringIO()
+        output = BytesIO()
         im.save(output, output_type, **save_opts[output_type])
         if i == 0:
             print('%d Bytes,' % len(output.getvalue()), end='\t')
