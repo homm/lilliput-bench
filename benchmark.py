@@ -2,6 +2,9 @@ import time
 from cStringIO import StringIO
 from PIL import Image, ImageOps
 
+
+Image.init()
+
 def analyze_gif(blob):
     im = Image.open(blob)
     results = {
