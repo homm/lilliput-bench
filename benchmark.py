@@ -5,11 +5,11 @@ from cStringIO import StringIO
 from PIL import Image, ImageOps
 
 
-def print_timings(timings):
+def print_timings(timings, precision=2):
     timings.sort()
-    print('avg: %.6f ms' % (sum(timings)/len(timings) * 1000), end='\t')
-    print('min: %.6f ms' % (timings[0] * 1000), end='\t')
-    print('max: %.6f ms' % (timings[-1] * 1000))
+    print(('avg: %%.%sf ms' % precision) % (sum(timings)/len(timings) * 1000), end='\t')
+    print(('min: %%.%sf ms' % precision) % (timings[0] * 1000), end='\t')
+    print(('max: %%.%sf ms' % precision) % (timings[-1] * 1000))
 
 
 def analyze_gif(blob):
@@ -86,7 +86,7 @@ def bench_header(path, num_iter):
             print('%dx%d,' % (width, height), end='\t')
         stop = time.time()
         timings.append(stop - start)
-    print_timings(timings)
+    print_timings(timings, precision=6)
 
 
 save_opts = {
