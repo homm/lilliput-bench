@@ -107,7 +107,6 @@ def bench_resize(path, output_type, width, height, num_iter):
     for i in xrange(num_iter):
         start = time.time()
         im = Image.open(blob)
-        im = im.convert('RGB' if output_type == 'JPEG' else 'RGBA')
         im = ImageOps.fit(im, (width, height), Image.BICUBIC)
         output = StringIO()
         im.save(output, output_type, **save_opts[output_type])
