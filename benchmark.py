@@ -7,9 +7,9 @@ from PIL import Image, ImageOps
 
 def print_timings(timings):
     timings.sort()
-    print('\tavg: %.6f ms' % (sum(timings)/len(timings) * 1000), end='')
-    print('\tmin: %.6f ms' % (timings[0] * 1000), end='')
-    print('\tmax: %.6f ms' % (timings[-1] * 1000))
+    print('avg: %.6f ms' % (sum(timings)/len(timings) * 1000), end='\t')
+    print('min: %.6f ms' % (timings[0] * 1000), end='\t')
+    print('max: %.6f ms' % (timings[-1] * 1000))
 
 
 def analyze_gif(blob):
@@ -83,7 +83,7 @@ def bench_header(path, num_iter):
         im = Image.open(blob)
         width, height = im.size
         if i == 0:
-            print('%dx%d,' % (width, height), end='')
+            print('%dx%d,' % (width, height), end='\t')
         stop = time.time()
         timings.append(stop - start)
     print_timings(timings)
@@ -116,7 +116,7 @@ def bench_resize(path, output_type, width, height, num_iter):
         output = StringIO()
         im.save(output, output_type, **save_opts[output_type])
         if i == 0:
-            print('%d Bytes,' % len(output.getvalue()), end='')
+            print('%d Bytes,' % len(output.getvalue()), end='\t')
             with open('py_%d.%s' % (width, output_type.lower()), 'wb') as f:
                 f.write(output.getvalue())
         output.close()
@@ -135,7 +135,7 @@ def bench_resize_gif(path, width, height, num_iter):
         path = '' if i != 0 else 'py_%d.gif' % width
         size = resize_gif(blob, width, height, path)
         if i == 0:
-            print('%d Bytes,' % size, end='')
+            print('%d Bytes,' % size, end='\t')
         stop = time.time()
         timings.append(stop - start)
     print_timings(timings)
@@ -152,7 +152,7 @@ def bench_transcode(path, output_type, num_iter):
         output = StringIO()
         im.save(output, output_type, **save_opts[output_type])
         if i == 0:
-            print('%d Bytes,' % len(output.getvalue()), end='')
+            print('%d Bytes,' % len(output.getvalue()), end='\t')
             with open('py_%s_transcode.%s' % (path, output_type.lower()), 'wb') as f:
                 f.write(output.getvalue())
         output.close()
@@ -162,38 +162,38 @@ def bench_transcode(path, output_type, num_iter):
 
 
 def main():
-    print('JPEG 1920x1080 header read:', end='')
+    print('JPEG 1920x1080 header read:', end='\t')
     bench_header('1920.jpeg', 10000)
-    print('PNG 1920x1080 header read:', end='')
+    print('PNG 1920x1080 header read:', end='\t')
     bench_header('1920.png', 10000)
-    print('WEBP 1920x1080 header read:', end='')
+    print('WEBP 1920x1080 header read:', end='\t')
     bench_header('1920.webp', 100)
-    print('GIF 1920x1080 header read:', end='')
+    print('GIF 1920x1080 header read:', end='\t')
     bench_header('1920.gif', 10000)
 
-    print('JPEG 256x256 => 32x32:', end='')
+    print('JPEG 256x256 => 32x32:', end='\t')
     bench_resize('256.jpeg', 'JPEG', 32, 32, 1000)
-    print('PNG 256x256 => 32x32:', end='')
+    print('PNG 256x256 => 32x32:', end='\t')
     bench_resize('256.png', 'PNG', 32, 32, 1000)
-    print('WEBP 256x256 => 32x32:', end='')
+    print('WEBP 256x256 => 32x32:', end='\t')
     bench_resize('256.webp', 'WEBP', 32, 32, 1000)
-    print('GIF 256x256 => 32x32:', end='')
+    print('GIF 256x256 => 32x32:', end='\t')
     bench_resize_gif('256.gif', 32, 32, 1000)
 
-    print('JPEG 1920x1080 => 800x600:', end='')
+    print('JPEG 1920x1080 => 800x600:', end='\t')
     bench_resize('1920.jpeg', 'JPEG', 800, 600, 100)
-    print('PNG 1920x1080 => 800x600:', end='')
+    print('PNG 1920x1080 => 800x600:', end='\t')
     bench_resize('1920.png', 'PNG', 800, 600, 100)
-    print('WEBP 1920x1080 => 800x600:', end='')
+    print('WEBP 1920x1080 => 800x600:', end='\t')
     bench_resize('1920.webp', 'WEBP', 800, 600, 100)
-    print('GIF 1920x1080 => 800x600:', end='')
+    print('GIF 1920x1080 => 800x600:', end='\t')
     bench_resize_gif('1920.gif', 800, 600, 50)
 
-    print('PNG 256x256 => WEBP 256x256:', end='')
+    print('PNG 256x256 => WEBP 256x256:', end='\t')
     bench_transcode('256.png', 'WEBP', 100)
-    print('JPEG 256x256 => PNG 256x256:', end='')
+    print('JPEG 256x256 => PNG 256x256:', end='\t')
     bench_transcode('256.jpeg', 'PNG', 100)
-    print('GIF 256x256 => PNG 256x256:', end='')
+    print('GIF 256x256 => PNG 256x256:', end='\t')
     bench_transcode('256.gif', 'PNG', 100)
 
 if __name__ == '__main__':
