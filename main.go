@@ -167,23 +167,12 @@ func main() {
 	fmt.Printf("GIF 1920x1080 => 800x600:\t")
 	bench_resize("1920.gif", ".gif", 800, 600, 50)
 
-<<<<<<< HEAD
-	fmt.Printf("PNG 256x256 => WEBP 256x256: ")
+	fmt.Printf("PNG 256x256 => WEBP 256x256:\t")
 	bench_transcode("256.png", ".webp", 100)
 
-	fmt.Printf("JPEG 256x256 => PNG 256x256: ")
+	fmt.Printf("JPEG 256x256 => PNG 256x256:\t")
 	bench_transcode("256.jpeg", ".png", 100)
 
-	fmt.Printf("GIF 256x256 => PNG 256x256: ")
-	bench_transcode("256.gif", ".png", 100)
-=======
-	fmt.Printf("PNG 256x256 => WEBP 256x256:\t")
-	bench_transcode("256.png", ".webp", 1000)
-
-	fmt.Printf("JPEG 256x256 => PNG 256x256:\t")
-	bench_transcode("256.jpeg", ".png", 1000)
-
 	fmt.Printf("GIF 256x256 => PNG 256x256:\t")
-	bench_transcode("256.gif", ".png", 1000)
->>>>>>> python3
+	bench_transcode("256.gif", ".png", 100)
 }
